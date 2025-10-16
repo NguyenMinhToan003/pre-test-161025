@@ -21,12 +21,7 @@ npm install
 Ví dụ `env` tối giản (`.env` hoặc `.env.development`):
 
 ```
-DATABASE_HOST=localhost
-DATABASE_PORT=3306
-DATABASE_USER=root
-DATABASE_PASS=password
-DATABASE_NAME=mydb
-JWT_SECRET=your_jwt_secret
+có thể copy phần .env.development qua .env để setup nhanhnhanh
 ```
 
 ## Chạy ứng dụng
