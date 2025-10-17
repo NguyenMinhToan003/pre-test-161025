@@ -80,7 +80,7 @@ export class AuthService {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      path: '/api/auth/refresh',
+      path: '/',
     });
     return {
       accessToken,
@@ -136,7 +136,7 @@ export class AuthService {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        path: '/api/auth/refresh',
+        path: '/',
       });
       await this.accountService.updateRefreshToken(+userId, newRefreshToken);
       return {
@@ -145,6 +145,31 @@ export class AuthService {
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+  async logout(refreshToken: string | undefined, res) {
+    if (!refreshToken) {
+      return { message: 'logout successfully' };
+    }
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const payload = await this.jwtService.verify(refreshToken, {
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const userId = payload.sub;
+      const account = await this.accountService.findAccount('id', +userId);
+      if (account) {
+        await this.accountService.updateRefreshToken(account.id, null);
+      }
+      res.clearCookie('refresh_token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+      });
+      return { message: 'logout successfully' };
+    } catch (error) {
+      return { message: 'logout successfully' };
     }
   }
 }

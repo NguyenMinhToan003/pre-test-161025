@@ -32,10 +32,10 @@ export class AccountService {
   }
   async updateRefreshToken(
     accountId: number,
-    refreshToken: string,
+    refreshToken: string | null,
   ): Promise<void> {
     await this.accountRepository.update(accountId, {
-      refreshToken: await hashPassword(refreshToken),
+      refreshToken: refreshToken ? await hashPassword(refreshToken) : null,
       expiredAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
     });
   }

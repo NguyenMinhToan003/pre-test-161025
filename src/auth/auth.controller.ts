@@ -40,4 +40,10 @@ export class AuthController {
     const refreshToken = req.cookies['refresh_token'];
     return this.authService.refresh(refreshToken, res);
   }
+  @Post('logout')
+  logout(@Req() req, @Res({ passthrough: true }) res) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const refreshToken = req.cookies['refresh_token'];
+    return this.authService.logout(refreshToken, res);
+  }
 }

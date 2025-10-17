@@ -35,7 +35,9 @@ export class RoleBasedThrottlerGuard extends ThrottlerGuard {
     const limit = this.getLimit(context);
     const role = req.user?.role || 'guest';
 
-    console.log(`[RateLimit] Checking rate limit for key: ${key}, role: ${role}`);
+    console.log(
+      `[RateLimit] Checking rate limit for key: ${key}, role: ${role}`,
+    );
 
     const record = await this.storageService.increment(
       key,
